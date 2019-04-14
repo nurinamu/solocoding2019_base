@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'todo.dart';
+import 'todo_add.dart';
 
 void main() => runApp(MyApp());
 
@@ -11,13 +12,18 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final List<Text> todos = <Text>[];
+  final TodoWidget todolist = TodoWidget();
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "nurinamu",
-      home: TodoWidget(todos)
+      home: todolist,
+      routes: <String, WidgetBuilder> {
+        '/add': (BuildContext context) => TodoAddPage(todolist),
+      },
     );
   }
+
 }
+

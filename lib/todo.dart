@@ -1,41 +1,44 @@
 import 'package:flutter/material.dart';
 
 class TodoWidget extends StatefulWidget {
-  final List<Text> _todos;
-  TodoWidget(this._todos);
-
+  final TodoList todoList = TodoList();
   @override
-  State<StatefulWidget> createState() => TodoList(_todos);
+  State<StatefulWidget> createState() => todoList;
+
+  addText(Text newTodo) {
+    todoList.addText(newTodo);
+  }
+
 }
 
 class TodoList extends State<TodoWidget> {
-  final List<Text> _todos;
-  TodoList(this._todos);
+  List<Text> _todos = <Text>[];
+
+  addText(Text newTodo) {
+    setState(() {
+      _todos.add(newTodo);
+    });
+
+  }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title : Text("할 일 목록"),
       ),
-      body: todoList(),
+      body: ListView(
+        children: _todos,
+      )
+      ,
       floatingActionButton: FloatingActionButton(
           onPressed: () =>  {
-            Navigator.push(context, MaterialPageRoute(builder: null))
+            Navigator.pushNamed(context, "/add")
       },
         child: Icon(Icons.add),
       ),
     );
   }
-
-  Widget todoList() {
-    return
-      _todos.isEmpty ?
-      Text("할일이 없다.") :
-      ListView.builder(itemBuilder: (BuildContext _context, int i){
-        return _todos[i];
-      });
-  }
-
 }
 
