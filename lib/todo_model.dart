@@ -7,9 +7,7 @@ class Todo {
   Todo(this.title, this.state);
 }
 
-enum TodoState {
-  added, done, cancelled, archived
-}
+enum TodoState { added, done, cancelled, archived }
 
 IconData findIconByState(TodoState state) {
   switch (state) {
