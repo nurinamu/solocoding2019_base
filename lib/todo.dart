@@ -32,10 +32,7 @@ class TodoList extends State<TodoWidget> {
           : ListView.builder(
               itemCount: _todos.length,
               itemBuilder: (c, i) {
-                return ListTile(
-                  leading: Icon(findIconByState(_todos[i].state)),
-                  title: Text(_todos[i].title),
-                );
+                return _todos[i].toListTile();
               },
             ),
       floatingActionButton: FloatingActionButton(
