@@ -15,6 +15,7 @@ class TodoWidget extends StatefulWidget {
 
 class TodoList extends State<TodoWidget> {
   List<Todo> _todos = [];
+  List<Todo> _archives = [];
 
   addTodo(String title) {
     setState(() {
@@ -41,13 +42,25 @@ class TodoList extends State<TodoWidget> {
                     new IconSlideAction(
                         caption: '보관',
                         color: Colors.blue,
-                        icon: Icons.archive),
+                        icon: Icons.archive,
+                    onTap: (){
+                          setState(() {
+                            _todos[i].state = TodoState.archived;
+                            _archives.add(_todos[i]);
+                            _todos.remove(_todos[i]);
+                          });
+                    },),
                   ],
                   secondaryActions: <Widget>[
                     new IconSlideAction(
                         caption: '삭제',
                         color: Colors.indigo,
-                        icon: Icons.delete),
+                        icon: Icons.delete,
+                        onTap: (){
+                          setState(() {
+                            _todos.remove(_todos[i]);
+                          });
+                        }),
                   ],
                 );
               },
