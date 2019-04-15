@@ -23,6 +23,7 @@ class TodoAdd extends State<TodoAddPage> {
         title: Text("할 일 추가"),
       ),
       body: TextField(
+        autofocus: true,
         controller: todoInputController,
       ),
       floatingActionButton: FloatingActionButton(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'todo_model.dart';
 
 class TodoWidget extends StatefulWidget {
@@ -32,7 +33,23 @@ class TodoList extends State<TodoWidget> {
           : ListView.builder(
               itemCount: _todos.length,
               itemBuilder: (c, i) {
-                return _todos[i].toListTile();
+                return Slidable(
+                  delegate: SlidableDrawerDelegate(),
+                  actionExtentRatio: 0.3,
+                  child: _todos[i].toListTile(),
+                  actions: <Widget>[
+                    new IconSlideAction(
+                        caption: '보관',
+                        color: Colors.blue,
+                        icon: Icons.archive),
+                  ],
+                  secondaryActions: <Widget>[
+                    new IconSlideAction(
+                        caption: '삭제',
+                        color: Colors.indigo,
+                        icon: Icons.delete),
+                  ],
+                );
               },
             ),
       floatingActionButton: FloatingActionButton(
