@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
+import 'todo_model.dart';
 
 class TodoWidget extends StatefulWidget {
   final TodoList todoList = TodoList();
   @override
   State<StatefulWidget> createState() => todoList;
 
-  addText(Text newTodo) {
-    todoList.addText(newTodo);
+  addTodo(String newTodo) {
+    todoList.addTodo(newTodo);
   }
 
 }
 
 class TodoList extends State<TodoWidget> {
-  List<Text> _todos = <Text>[];
+  List<Todo> _todos = [];
 
-  addText(Text newTodo) {
+  addTodo(String title) {
     setState(() {
-      _todos.add(newTodo);
+      _todos.add(Todo(title, TodoState.added));
     });
 
   }
@@ -28,8 +29,16 @@ class TodoList extends State<TodoWidget> {
       appBar: AppBar(
         title : Text("할 일 목록"),
       ),
-      body: ListView(
-        children: _todos,
+      body:
+      _todos.isEmpty ? ListTile(title:Text("할 일이 없네..")) :
+      ListView.builder(
+        itemCount: _todos.length,
+        itemBuilder: (c,i) {
+          return ListTile(
+            leading: Icon(findIconByState(_todos[i].state)),
+            title: Text(_todos[i].title),
+          );
+        },
       )
       ,
       floatingActionButton: FloatingActionButton(

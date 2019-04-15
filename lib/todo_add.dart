@@ -36,7 +36,7 @@ class TodoAdd extends State<TodoAddPage> {
   }
 
   addAction(BuildContext context) {
-    todoWidget.addText(Text(todoInputController.text));
+    todoWidget.addTodo(todoInputController.text);
     todoInputController.clear();
     Navigator.pop(context);
   }
