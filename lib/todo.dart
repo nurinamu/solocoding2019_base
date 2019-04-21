@@ -9,8 +9,8 @@ class TodoWidget extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => todoList;
 
-  addTodo(String newTodo) {
-    todoList.addTodo(newTodo);
+  addTodo(String newTodo, Color pickedColor) {
+    todoList.addTodo(newTodo, pickedColor);
   }
 }
 
@@ -23,9 +23,9 @@ class TodoList extends State<TodoWidget> {
   List<Todo> _archives = [];
   ListKind current = ListKind.todo;
 
-  addTodo(String title) {
+  addTodo(String title, Color pickedColor) {
     setState(() {
-      _todos.add(Todo(title, TodoState.added));
+      _todos.add(Todo(title, TodoState.added, pickedColor));
     });
   }
 

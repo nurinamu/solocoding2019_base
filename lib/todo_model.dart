@@ -1,23 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:share/share.dart';
+import 'package:intl/intl.dart';
 
 class Todo {
   String title;
   DateTime targetDate;
+  DateFormat dateFormat = DateFormat("yyyy-MM-dd H:m");
   TodoState state;
+  Color backgroundColor;
 
-  Todo(this.title, this.state);
+  Todo(this.title, this.state, this.backgroundColor) {
+    targetDate = DateTime.now();
+  }
 
-  ListTile toListTile() {
-    return ListTile(
-      leading: Icon(findIconByState(state)),
-      title: Text(title),
-      subtitle: Text(timeStr(targetDate)), //FIXME
-      trailing: IconButton(
-          icon: Icon(Icons.share),
-          onPressed: () {
-            Share.share("Todo : " + title + " [" + timeStr(targetDate) + "]");
-          }),
+  Widget toListTile() {
+    return Container(
+      color: backgroundColor,
+      child: ListTile(
+        leading: Icon(findIconByState(state)),
+        title: Text(title),
+        subtitle: Text(timeStr()), //FIXME
+        trailing: IconButton(
+            icon: Icon(Icons.share),
+            onPressed: () {
+              Share.share("Todo : " + title + " [" + timeStr() + "]");
+            }),
+      ),
     );
   }
 
@@ -34,8 +42,9 @@ class Todo {
     }
   }
 
-  String timeStr(DateTime date) =>
-      date == null ? DateTime.now().toIso8601String() : date.toIso8601String();
+  String timeStr() =>
+      dateFormat.format(targetDate == null ? DateTime.now() : targetDate);
+
 }
 
 enum TodoState { added, done, cancelled, archived }
