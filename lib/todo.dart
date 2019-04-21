@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
+import 'todo_list.dart';
+import 'todo_archive.dart';
 import 'todo_model.dart';
 
 class TodoWidget extends StatefulWidget {
@@ -13,9 +14,14 @@ class TodoWidget extends StatefulWidget {
   }
 }
 
+enum ListKind {
+  todo, archive
+}
+
 class TodoList extends State<TodoWidget> {
   List<Todo> _todos = [];
   List<Todo> _archives = [];
+  ListKind current = ListKind.todo;
 
   addTodo(String title) {
     setState(() {
@@ -23,52 +29,48 @@ class TodoList extends State<TodoWidget> {
     });
   }
 
+  doAction(Function func) {
+    setState(func);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("할 일 목록"),
+        title: ListKind.todo == current ? Text("할 일 목록") : Text("보관함"),
       ),
-      body: _todos.isEmpty
-          ? ListTile(title: Text("할 일이 없네.."))
-          : ListView.builder(
-              itemCount: _todos.length,
-              itemBuilder: (c, i) {
-                return Slidable(
-                  delegate: SlidableDrawerDelegate(),
-                  actionExtentRatio: 0.3,
-                  child: _todos[i].toListTile(),
-                  actions: <Widget>[
-                    new IconSlideAction(
-                        caption: '보관',
-                        color: Colors.blue,
-                        icon: Icons.archive,
-                    onTap: (){
-                          setState(() {
-                            _todos[i].state = TodoState.archived;
-                            _archives.add(_todos[i]);
-                            _todos.remove(_todos[i]);
-                          });
-                    },),
-                  ],
-                  secondaryActions: <Widget>[
-                    new IconSlideAction(
-                        caption: '삭제',
-                        color: Colors.indigo,
-                        icon: Icons.delete,
-                        onTap: (){
-                          setState(() {
-                            _todos.remove(_todos[i]);
-                          });
-                        }),
-                  ],
-                );
-              },
-            ),
+      body: ListKind.todo == current ? getTodoListView(this, _todos, _archives) : getArchiveListView(this, _archives),
       floatingActionButton: FloatingActionButton(
         onPressed: () => {Navigator.pushNamed(context, "/add")},
         child: Icon(Icons.add),
       ),
+        drawer: Drawer(
+            child:
+            ListView(
+              children: <Widget>[
+                ListTile(
+                  leading: Icon(Icons.developer_board),
+                  title: Text('할 일 목록'),
+                  onTap: () {
+                    setState(() {
+                      current = ListKind.todo;
+                      Navigator.pop(context);
+                    });
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.archive),
+                  title: Text('보관함'),
+                  onTap: () {
+                    setState(() {
+                      current = ListKind.archive;
+                      Navigator.pop(context);
+                    });
+                  },
+                )
+              ],
+            )
+        )
     );
   }
 }

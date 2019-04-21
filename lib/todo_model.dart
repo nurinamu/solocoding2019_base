@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:share/share.dart';
 
 class Todo {
   String title;
+  DateTime targetDate;
   TodoState state;
 
   Todo(this.title, this.state);
@@ -10,7 +12,12 @@ class Todo {
     return ListTile(
       leading: Icon(findIconByState(state)),
       title: Text(title),
-      subtitle: Text("2019년 12월 25일"),  //FIXME
+      subtitle: Text(timeStr(targetDate)), //FIXME
+      trailing: IconButton(
+          icon: Icon(Icons.share),
+          onPressed: () {
+            Share.share("Todo : " + title + " [" + timeStr(targetDate) + "]");
+          }),
     );
   }
 
@@ -27,9 +34,8 @@ class Todo {
     }
   }
 
-
+  String timeStr(DateTime date) =>
+      date == null ? DateTime.now().toIso8601String() : date.toIso8601String();
 }
 
 enum TodoState { added, done, cancelled, archived }
-
-
